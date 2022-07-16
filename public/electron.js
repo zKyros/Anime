@@ -46,6 +46,16 @@ app.on('activate', () => {
   }
 });
 
+const { ipcMain } = require('electron');
+const loadBalancer = require('electron-load-balancer');
+
+loadBalancer.register(
+	ipcMain,
+	{
+		// 'script':  '/background_tasks/script.html',
+	}
+)
+
 // ------------------- set up event listeners here --------------------
 
 // This event listener will listen for request 

@@ -5,6 +5,8 @@ const url = require('url');
 const { app } = electron;
 const { BrowserWindow } = electron;
 
+const { ipcMain } = require('electron');
+
 let mainWindow;
 
 function createWindow() {
@@ -15,7 +17,12 @@ function createWindow() {
         protocol: 'file:',
         slashes: true,
       });
-  mainWindow = new BrowserWindow();
+
+  mainWindow = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
 
   mainWindow.loadURL(startUrl);
   process.env.DEV && mainWindow.webContents.openDevTools();
@@ -37,4 +44,18 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+// ------------------- set up event listeners here --------------------
+
+// This event listener will listen for request 
+// from visible renderer process
+ipcMain.on('START_BACKGROUND_VIA_MAIN', (event, args) => {
+	/* ---- Code to execute as callback ---- */
+});
+
+// This event listener will listen for data being sent back 
+// from the background renderer process
+ipcMain.on('MESSAGE_FROM_BACKGROUND', (event, args) => {
+	/* ---- Code to execute as callback ---- */
 });
